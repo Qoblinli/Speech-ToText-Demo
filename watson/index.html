@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="base64.js"></script>
+    <script src="fetch.js"></script>
+    <script src="watson-speech.min.js"></script>
+    <script src="/materialize/js/jquery-2.1.1.min.js"></script>
+
+</head>
+<body>
+    <form>
+        <div>
+            <h2>Transcribe from Microphone, with Alternatives</h2>
+            <button id="btn_start">Start Microphone Transcription</button>
+            <button id="stop">Stop</button>
+            <button id="en" onclick="en();">EN</button>
+            <button id="cn" onclick="cn();">CN</button>
+
+            <h2>Output:</h2>
+            <div id="output">-111-</div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    //var _model = "en-US_BroadbandModel";
+    //var en = function () {
+    //    _model = "en-US_BroadbandModel";
+    //    $("#output").html(" ");
+
+    //};
+    //var cn = function () {
+    //    _model = "zh-CN_BroadbandModel";
+    //    $("#output").html(" ");
+
+    //};
+  
+    document.querySelector('#btn_start').onclick = function () {
+
+
+
+
+
+        fetch("/test.aspx").then(function (response) {
+            return response.text();
+        }).then(function (token) {
+            alert(token);
+            var stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
+                token: token,
+                outputElement: '#output', // CSS selector or DOM Element
+                model: _model
+            });
+
+
+            stream.on('error', function (err) {
+                console.log(err);
+                alert(err);
+            });
+
+            document.querySelector('#stop').onclick = function () {
+                stream.stop();
+            };
+
+        }).catch(function (error) {
+            console.log(error);
+            alert(error);
+        });
+    };
+
+
+
+</script>
+
+
+
